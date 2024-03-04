@@ -1,0 +1,69 @@
+
+
+  <div class="container">
+    <div class="row mt-2">
+      <div class="col col-md-4 offset-md-4">
+        <a class="btn btn-primary" routerLink="/AddPost">Add Post</a>
+      </div>
+    </div>
+      <table class="table">
+        <thead>
+          <tr>
+        <th>ID</th>
+          <th>Post Title</th>
+          <th>Body</th>
+          <th>Created At</th>
+          <th>Star Number</th>
+          <th>Signal Number</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of posts | async">
+                <th scope="row">{{ i.idPost }}</th>
+                <td><span>{{i.postTitle}}</span></td>
+                <td><span>{{i.body}}</span></td>
+                <td><span>{{i.createdAt}}</span></td>
+                <td><span>{{i.nb_etoil}}</span></td>
+                <td><span>{{i.nb_Signal}}</span></td>
+
+                <td>
+                    <a class="btn btn-primary" [routerLink]="['/editPost', i.idPost]">Edit</a>
+                    <button type="button" (click)="deletePost(i.idPost)" class="btn btn-danger">Delete Post</button>
+                    
+                    <button [disabled]="(hasComments(i) | async)" class="btn btn-green" (click)="showComments(i)">Comments</button>
+
+                    <ul *ngIf="currentPostIdWithVisibleComments === i.idPost">
+                        <li *ngFor="let comment of commentList | async">
+                          {{ comment.commentBody }} - {{ comment.commentedAt }}
+                        </li>
+                    </ul>
+                      
+                   
+                    
+                </td>
+                
+                
+                
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure to delete the item?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" (click)="delete()">Confirm Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
